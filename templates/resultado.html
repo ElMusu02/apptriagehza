@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Resultado - Triage</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+      /* Mejorar el aspecto al imprimir */
+      @media print {
+        .no-print { display: none !important; }
+        body { background: white !important; }
+      }
+    </style>
+  </head>
+  <body class="bg-light">
+    <div class="container py-4">
+      <div class="text-center mb-3">
+        <h1 class="display-6">Resultado de la Evaluación</h1>
+        <p class="text-muted">Resumen del puntaje y nivel de prioridad</p>
+      </div>
+
+      <div class="card mb-3 shadow-sm">
+        <div class="card-body">
+          <h3 class="card-title">Puntaje total: <span class="badge bg-{{ color }}">{{ total }}</span></h3>
+          <h4>Nivel: <span class="fw-bold">{{ nivel }}</span></h4>
+          <p class="lead">{{ mensaje }}</p>
+        </div>
+      </div>
+
+      <div class="row g-3 mb-3">
+        <div class="col-12 col-md-6">
+          <div class="card shadow-sm">
+            <div class="card-header">
+              <strong>Detalle de puntos por sección</strong>
+            </div>
+            <div class="card-body">
+              <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Sección 1 (crítica)
+                  <span class="badge bg-secondary">{{ detalle['Seccion1'] }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Sección 2 (clínica)
+                  <span class="badge bg-secondary">{{ detalle['Seccion2'] }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Frecuencia cardíaca
+                  <span class="badge bg-secondary">{{ detalle['FrecuenciaCardiaca'] }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Temperatura
+                  <span class="badge bg-secondary">{{ detalle['Temperatura'] }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Frecuencia respiratoria
+                  <span class="badge bg-secondary">{{ detalle['FrecuenciaRespiratoria'] }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Tensión arterial
+                  <span class="badge bg-secondary">{{ detalle['TensionArterial'] }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Glucemia
+                  <span class="badge bg-secondary">{{ detalle['Glucemia'] }}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <div class="card shadow-sm">
+            <div class="card-header">
+              <strong>Resumen de inputs</strong>
+            </div>
+            <div class="card-body">
+              <dl class="row">
+                <!-- Mostrar criterios críticos seleccionados -->
+                <dt class="col-6">Criterios críticos seleccionados</dt>
+                <dd class="col-6">
+                  {{ criterios_criticos | join(', ') if criterios_criticos else 'Ninguno' }}
+                </dd>
+
+                <dt class="col-6">Sección 2 (valores)</dt>
+                <dd class="col-6">
+                  <ul class="mb-0">
+                    {% for p in seccion2 %}
+                      <li>{{ p.replace('_',' ') }}: {{ form.get(p) }} pts</li>
+                    {% endfor %}
+                  </ul>
+                </dd>
+
+                <dt class="col-6">Frecuencia cardíaca</dt>
+                <dd class="col-6">{{ form.get('frecuencia_cardiaca') or '—' }}</dd>
+
+                <dt class="col-6">Temperatura</dt>
+                <dd class="col-6">{{ form.get('temperatura') or '—' }}</dd>
+
+                <dt class="col-6">Frecuencia respiratoria</dt>
+                <dd class="col-6">{{ form.get('frecuencia_respiratoria') or '—' }}</dd>
+
+                <dt class="col-6">Tensión arterial</dt>
+                <dd class="col-6">
+                  {{ form.get('tension_arterial') or (form.get('tension_sistolica') ~ '/' ~ form.get('tension_diastolica')) }}
+                </dd>
+
+                <dt class="col-6">Glucemia</dt>
+                <dd class="col-6">{{ form.get('glucemia') or '—' }}</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex gap-2 mb-4 no-print">
+        <a class="btn btn-outline-secondary" href="{{ url_for('index') }}">Volver</a>
+        <button id="printBtn" class="btn btn-primary">Descargar PDF / Imprimir</button>
+      </div>
+
+      <footer class="text-muted small">
+        Prototipo — adaptar para uso institucional con validación y pruebas.
+      </footer>
+    </div>
+
+    <script>
+      document.getElementById('printBtn').addEventListener('click', function () {
+        window.print();
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
