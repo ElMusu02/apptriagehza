@@ -9,7 +9,7 @@ SECCION2_PARAMS = [
     'palidez', 'hemorragia(proctorragia,metrorragia,por heridas)', 'dolor', 'intoxicacion(consumo de sustancias)_o_auto_dano',
     'convulsiones', 'glasgow', 'deshidratacion', 'psicosis_agitacion_violencia',
     'ataque_de_panico', 'reacciones_alergicas', 'disartria', 'disfagia',
-    'hemiparesia', 'mordedura_de_perro', 'odontalgia', 
+    'hemiparesia', 'mordedura_de_perro', 'odontalgia', 'lumbalgia'
 ]
 
 # Funciones auxiliares para Sección 3
