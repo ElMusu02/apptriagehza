@@ -46,6 +46,14 @@
                     <label for="motivo" class="form-label">Motivo de consulta</label>
                     <textarea class="form-control" name="motivo" id="motivo" rows="2" required></textarea>
                   </div>
+                  <div class="col-12">
+                    <label for="antecedentes" class="form-label">Antecedentes</label>
+                    <textarea class="form-control" name="antecedentes" id="antecedentes" rows="2" required></textarea>
+                  </div>
+                  <div class="col-md-4">
+                    <label for="alergias" class="form-label">Alergias</label>
+                    <textarea class="form-control" name="alergias" id="alergias" rows="2" required></textarea>
+                  </div>
                 </div>
               </div>
             </div>
@@ -61,7 +69,7 @@
             </div>
             <div class="form-check">
               <input class="form-check-input" type="checkbox" name="apnea" id="apnea">
-              <label class="form-check-label" for="apnea">Apnea</label>
+              <label class="form-check-label" for="apnea">Apnea - Respiracion agonica</label>
             </div>
             <div class="form-check">
               <input class="form-check-input" type="checkbox" name="ausencia_pulso_fc_menor_40" id="ausencia_pulso_fc_menor_40">
@@ -69,7 +77,7 @@
             </div>
             <div class="form-check">
               <input class="form-check-input" type="checkbox" name="angor_dolor_precordial_toracico" id="angor_dolor_precordial_toracico">
-              <label class="form-check-label" for="angor_dolor_precordial_toracico">Angor / dolor torácico</label>
+              <label class="form-check-label" for="angor_dolor_precordial_toracico">Dolor precordial/toracico</label>
             </div>
              <div class="form-check">
               <input class="form-check-input" type="checkbox" name="tec_con_perdida" id="tec_con_perdida">
@@ -93,7 +101,7 @@
             </div>   
               <div class="form-check">
               <input class="form-check-input" type="checkbox" name="epistasis" id="epistasis">
-              <label class="form-check-label" for="epistasis">Epistasis activa</label>
+              <label class="form-check-label" for="epistasis">Epistaxis activa</label>
             </div>                                                       
           </div>
         </div>
@@ -101,22 +109,48 @@
         <!-- =========================
              Sección 2: Síntomas con puntaje
         ========================= -->
-        <div class="card mb-3 shadow-sm">
-          <div class="card-body">
-            <h4 class="section-title">Sección 2: Síntomas clínicos</h4>
-            {% for p in seccion2 %}
-            <div class="mb-2">
-              <label for="{{ p }}" class="form-label">{{ p.replace('_',' ').capitalize() }}</label>
-              <select class="form-select" name="{{ p }}" id="{{ p }}">
-                <option value="0">Ausente (0 pts)</option>
-                <option value="5">Leve (5 pts)</option>
-                <option value="10">Moderado (10 pts)</option>
-                <option value="15">Severo (15 pts)</option>
-              </select>
-            </div>
-            {% endfor %}
-          </div>
+        {% for p in seccion2 %}
+        <div class="mb-2">
+          <label for="{{ p }}" class="form-label">
+            {{ p.replace('_',' ').capitalize() }}
+          </label>
+        
+          <select class="form-select" name="{{ p }}" id="{{ p }}">
+        
+            {% if p == 'ataque_de_panico' %}
+              <option value="0">Ausente (0 pts)</option>
+              <option value="5">Controlado (5 pts)</option>
+              <option value="10">Evidente (10 pts)</option>
+              <option value="15">Excitación / Desorientación (15 pts)</option>
+        
+            {% elif p == 'herida' %}
+              <option value="0">Ausente (0 pts)</option>
+              <option value="5">Superficial (5 pts)</option>
+              <option value="10">No penetrante (10 pts)</option>
+              <option value="15">Extensa o profunda (15 pts)</option>
+        
+            {% elif p == 'traumatismo' %}
+              <option value="0">Ausente (0 pts)</option>
+              <option value="5">Menor (5 pts)</option>
+              <option value="10">Moderado (10 pts)</option>
+              <option value="15">Mayor (15 pts)</option>
+        
+            {% elif p == 'glasgow' %}
+              <option value="0">Ausente (15) (0 pts)</option>
+              <option value="5">Leve (14 a 12) (5 pts)</option>
+              <option value="10">Moderado (11 a 8) (10 pts)</option>
+              <option value="15">Mayor (&lt; 8) (15 pts)</option>
+        
+            {% else %}
+              <option value="0">Ausente (0 pts)</option>
+              <option value="5">Leve (5 pts)</option>
+              <option value="10">Moderado (10 pts)</option>
+              <option value="15">Severo (15 pts)</option>
+            {% endif %}
+        
+          </select>
         </div>
+        {% endfor %}
 
         <!-- =========================
              Sección 3: Signos vitales

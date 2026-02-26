@@ -69,6 +69,8 @@
     <p><strong>Nombre completo:</strong> {{ form.get('nombre') }} {{ form.get('apellido') }}</p>
     <p><strong>DNI:</strong> {{ form.get('dni') }}</p>
     <p><strong>Motivo de consulta:</strong> {{ form.get('motivo') }}</p>
+    <p><strong>Antecedentes:</strong> {{ form.get('antecedentes') }}</p>
+    <p><strong>Alergias:</strong> {{ form.get('alergias') }}</p>
   </div>
 </div>
 
@@ -76,6 +78,9 @@
         <div class="card-body">
           <h3 class="card-title">Puntaje total: <span class="badge bg-{{ color }}">{{ total }}</span></h3>
           <h4>Nivel: <span class="fw-bold">{{ nivel }}</span></h4>
+          <p class="mb-0 mt-2">
+            <strong>Fecha y hora:</strong> {{ fecha_hora }}
+          </p>
         </div>
       </div>
 

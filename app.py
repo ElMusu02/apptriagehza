@@ -1,12 +1,15 @@
 from flask import Flask, render_template, request
+from datetime import datetime
 
 app = Flask(__name__)
 
 # Sección 2: parámetros con puntaje según grado
 SECCION2_PARAMS = [
     'traumatismo', 'herida', 'aumento_trabajo_respiratorio', 'cianosis',
-    'palidez', 'hemorragia', 'dolor', 'intoxicacion_auto_dano',
-    'convulsiones', 'glasgow', 'deshidratacion', 'psicosis_agitacion_violencia'
+    'palidez', 'hemorragia(proctorragia,metrorragia,por heridas)', 'dolor', 'intoxicacion(consumo de sustancias)_o_auto_dano',
+    'convulsiones', 'glasgow', 'deshidratacion', 'psicosis_agitacion_violencia',
+    'ataque_de_panico', 'reacciones_alergicas', 'disartria', 'disfagia',
+    'hemiparesia', 'mordedura_de_perro', 'odontalgia', 
 ]
 
 # Funciones auxiliares para Sección 3
@@ -146,6 +149,8 @@ def index():
         else:
             nivel = 'Nivel 5: sin urgencia hasta 240 minutos'
             color = 'blue'
+        
+        fecha_hora = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
         return render_template(
             'resultado.html',
@@ -156,7 +161,8 @@ def index():
             detalle=detalle,
             form=form,
             seccion2=SECCION2_PARAMS,
-            criterios_criticos=criterios_criticos
+            criterios_criticos=criterios_criticos,
+            fecha_hora=fecha_hora
         )
 
     return render_template('index.html', seccion2=SECCION2_PARAMS)
