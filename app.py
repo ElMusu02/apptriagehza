@@ -54,6 +54,7 @@ def puntaje_glucemia(g):
 def index():
     if request.method == 'POST':
         form = request.form
+        print("FORM RECIBIDO:", form)
         total = 0
 
         # =========================
@@ -72,7 +73,24 @@ def index():
         if form.get('angor_dolor_precordial_toracico'):
             total += 31
             criterios_criticos.append('Angor / dolor torácico')
-
+        if form.get('tec_con_perdida'):
+            total += 31
+            criterios_criticos.append('Tec con perdida de conocimiento')    
+        if form.get('convulsiones_sec1'):
+            total += 31
+            criterios_criticos.append('Convulsiones')
+        if form.get('heridas_hemorragias'):
+            total += 31
+            criterios_criticos.append('Heridas con hemorragias abundantes')
+        if form.get('acv'):
+            total += 31
+            criterios_criticos.append('ACV en curso')
+        if form.get('psicosis'):
+            total += 31
+            criterios_criticos.append('Psicosis - Excitacion psicomotriz')
+        if form.get('epistasis'):
+            total += 31
+            criterios_criticos.append('Epistasis activa')
         # =========================
         # Sección 2: síntomas con puntaje según grado
         # =========================
@@ -115,19 +133,19 @@ def index():
         # =========================
         if total > 30:
             nivel = 'Nivel 1: reanimación inmediata'
-            color = 'danger'
+            color = 'red'
         elif total > 20:
             nivel = 'Nivel 2: emergencias 10 minutos'
-            color = 'warning'
+            color = 'orange'
         elif total > 10:
             nivel = 'Nivel 3: urgencias hasta 60 minutos'
-            color = 'info'
+            color = 'yellow'
         elif total > 5:
             nivel = 'Nivel 4: urgencia menor hasta 120 minutos'
-            color = 'secondary'
+            color = 'green'
         else:
             nivel = 'Nivel 5: sin urgencia hasta 240 minutos'
-            color = 'success'
+            color = 'blue'
 
         return render_template(
             'resultado.html',

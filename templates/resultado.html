@@ -6,13 +6,53 @@
     <title>Resultado - Triage</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <style>
-      /* Mejorar el aspecto al imprimir */
-      @media print {
-        .no-print { display: none !important; }
-        body { background: white !important; }
-      }
-    </style>
+<style>
+  /* Colores personalizados (pantalla + print) */
+  .card-color {
+    color: white !important;
+  }
+
+  .bg-red-print { background-color: #dc3545 !important; }
+  .bg-orange-print { background-color: #fd7e14 !important; }
+  .bg-yellow-print { background-color: #ffc107 !important; color: black !important; }
+  .bg-green-print { background-color: #198754 !important; }
+  .bg-blue-print { background-color: #0d6efd !important; }
+
+  /* Configuración especial solo para impresión */
+  @media print {
+    .no-print { display: none !important; }
+    body { background: white !important; }
+
+    .card-color {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+
+    /* Oculto por defecto (pantalla) */
+  .print-only {
+    display: none;
+  }
+
+  .signature-line {
+    border-top: 2px solid black;
+    margin: 60px 40px 0 40px;
+  }
+
+  /* Solo visible al imprimir */
+  @media print {
+
+    .print-only {
+      display: block;
+    }
+
+    .signature-section {
+      margin-top: 80px;
+      page-break-inside: avoid;
+    }
+
+  }
+</style>
   </head>
   <body class="bg-light">
     <div class="container py-4">
@@ -22,10 +62,20 @@
       </div>
 
       <div class="card mb-3 shadow-sm">
+  <div class="card-header">
+    <strong>Datos del Paciente</strong>
+  </div>
+  <div class="card-body">
+    <p><strong>Nombre completo:</strong> {{ form.get('nombre') }} {{ form.get('apellido') }}</p>
+    <p><strong>DNI:</strong> {{ form.get('dni') }}</p>
+    <p><strong>Motivo de consulta:</strong> {{ form.get('motivo') }}</p>
+  </div>
+</div>
+
+      <div class="card mb-3 shadow-sm card-color bg-{{ color }}-print">
         <div class="card-body">
           <h3 class="card-title">Puntaje total: <span class="badge bg-{{ color }}">{{ total }}</span></h3>
           <h4>Nivel: <span class="fw-bold">{{ nivel }}</span></h4>
-          <p class="lead">{{ mensaje }}</p>
         </div>
       </div>
 
@@ -119,10 +169,18 @@
         <button id="printBtn" class="btn btn-primary">Descargar PDF / Imprimir</button>
       </div>
 
-      <footer class="text-muted small">
-        Prototipo — adaptar para uso institucional con validación y pruebas.
-      </footer>
+      <div class="signature-section print-only mt-5">
+  <div class="row text-center">
+    <div class="col-6">
+      <div class="signature-line"></div>
+      <p class="mt-2 mb-0"><strong>Firma del Paciente</strong></p>
     </div>
+    <div class="col-6">
+      <div class="signature-line"></div>
+      <p class="mt-2 mb-0"><strong>Firma Profesional de Enfermería</strong></p>
+    </div>
+  </div>
+</div>
 
     <script>
       document.getElementById('printBtn').addEventListener('click', function () {
